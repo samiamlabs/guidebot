@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="guidebot" >
+
+  <include filename="../urdf/materials/materials.xacro"/>
+  <include filename="../urdf/plugins.gazebo.xacro"/>
+
+  <!-- Set up definitions of parts of robot body -->
+  <include filename="../urdf/base/diff_drive_base.urdf.xacro"/>
+
+  <!-- Use macros to define the actual robot -->
+  <xacro:base/>
+
+</robot>
