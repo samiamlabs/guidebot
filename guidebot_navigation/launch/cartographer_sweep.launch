@@ -1,0 +1,7 @@
+<launch>
+
+  <include file="$(find guidebot_navigation)/launch/cartographer.launch.xml">
+    <arg name="configuration_basename" value="cartographer_sweep.lua" />
+  </include>
+
+</launch>

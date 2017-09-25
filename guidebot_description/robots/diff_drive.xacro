@@ -7,8 +7,18 @@
 
   <!-- Set up definitions of parts of robot body -->
   <include filename="../urdf/base/diff_drive_base.urdf.xacro"/>
+  <include filename="../urdf/sensors/sweep.urdf.xacro"/>
 
   <!-- Use macros to define the actual robot -->
-  <xacro:base/>
+  <base/>
+
+  <joint name="sweep_mount_joint" type="fixed">
+    <origin xyz="0 0 0.142" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="sweep_mount_link"/>
+  </joint>
+
+  <sweep name="sweep" ros_topic="scan" min_angle="${-pi}" max_angle="${pi}"/>
+
 
 </robot>
