@@ -28,6 +28,7 @@
     </joint>
 
     <link name="${name}_link">
+      <!--
       <visual>
         <origin xyz="0 0 -0.033" rpy="0 0 0"/>
         <geometry>
@@ -40,6 +41,7 @@
           <mesh filename="${mesh}" />
         </geometry>
       </collision>
+      -->
       <inertial>
         <mass value="${mass}" />
         <origin xyz="0 0 -0.026" />

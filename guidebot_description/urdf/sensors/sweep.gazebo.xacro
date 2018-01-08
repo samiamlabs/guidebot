@@ -4,9 +4,9 @@
 
   <macro name="scanse_sweep_gazebo" params="name link ros_topic update_rate min_angle max_angle min_range max_range">
     <gazebo reference="${link}">
-      <sensor type="gpu_ray" name="${name}">
+      <sensor type="ray" name="${name}">
         <pose>0 0 0 0 0 0</pose>
-        <visualize>false</visualize>
+        <visualize>true</visualize>
         <update_rate>${update_rate}</update_rate>
         <ray>
           <scan>
@@ -29,7 +29,7 @@
             <stddev>0.03</stddev>
           </noise>
         </ray>
-        <plugin name="gazebo_ros_${name}_controller" filename="libgazebo_ros_gpu_laser.so">
+        <plugin name="gazebo_ros_${name}_controller" filename="libgazebo_ros_laser.so">
           <topicName>${ros_topic}</topicName>
           <frameName>${link}</frameName>
           <update_rate>${update_rate}</update_rate>
