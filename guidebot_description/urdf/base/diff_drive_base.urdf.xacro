@@ -51,10 +51,19 @@
     <!-- Base footprint -->
     <link name="base_footprint"/>
 
-    <joint name="base_footprint_link" type="fixed">
+    <joint name="base_footprint_joint" type="fixed">
       <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/>
       <parent link="base_footprint"/>
       <child link="base_link"/>
+    </joint>
+
+    <!-- IMU link -->
+    <link name="imu_link"/>
+
+    <joint name="imu_joint" type="fixed">
+      <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/>
+      <parent link="base_footprint"/>
+      <child link="imu_link"/>
     </joint>
 
     <!-- Macros -->

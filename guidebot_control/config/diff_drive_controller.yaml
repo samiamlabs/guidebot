@@ -4,7 +4,8 @@ mobile_base_controller:
   right_wheel : 'wheel_right_joint'
   publish_rate: 50.0
   pose_covariance_diagonal : [0.001, 0.001, 1.0e-3, 1.0e-3, 1.0e-3, 0.01]
-  twist_covariance_diagonal: [0.001, 0.001, 1.0e-3, 1.0e-3, 1.0e-3, 0.01]
+  #twist_covariance_diagonal: [0.001, 0.001, 1.0e-3, 1.0e-3, 1.0e-3, 0.01]
+  twist_covariance_diagonal: [0.01, 0.01, 1.0e-2, 1.0e-2, 1.0e-2, 0.1]
 
   enable_pose_covariance_update: true
   error_constant_left : 0.001
@@ -20,7 +21,7 @@ mobile_base_controller:
   preserve_turning_radius: true
 
   # Publish limited velocity
-  publish_cmd: false
+  publish_cmd: true
 
   # Publish wheel data
   publish_wheel_data: true
@@ -30,17 +31,17 @@ mobile_base_controller:
   linear:
     x:
       has_velocity_limits    : true
-      max_velocity           :  1.0 # m/s
-      min_velocity           : -0.2 # m/s
-      has_acceleration_limits: true
-      max_acceleration       :  1.0 # m/s^2
+      max_velocity           :  2.0 # m/s
+      min_velocity           : -1.2 # m/s
+      has_acceleration_limits: false
+      max_acceleration       : 20.0 # m/s^2
       has_jerk_limits        : false
-      max_jerk               :  5.0 # m/s^3
+      max_jerk               : 50.0 # m/s^3
   angular:
     z:
       has_velocity_limits    : true
       max_velocity           : !degrees 120.0
-      has_acceleration_limits: true
+      has_acceleration_limits: false
       max_acceleration       : !degrees 120.0
       has_jerk_limits        : false
       max_jerk               : !degrees 600.0
