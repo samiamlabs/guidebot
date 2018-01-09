@@ -4,7 +4,9 @@ global_costmap:
    update_frequency: 1.0
    publish_frequency: 0
    static_map: true
-   rolling_window: false
+   width: 100
+   height: 100
+   rolling_window: true
    resolution: 0.03
    transform_tolerance: 1.0
    map_type: costmap

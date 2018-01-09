@@ -10,7 +10,7 @@
 
   <include file="$(find guidebot_navigation)/launch/cartographer_sweep_imu.launch"/>
 
-  <include file="$(find guidebot_navigation)/launch/move_base.launch"/>
+  <include file="$(find guidebot_navigation)/launch/move_base2.launch"/>
 
   <arg name="cmd_vel_out" default="/mobile_base_controller/cmd_vel"/>
 
@@ -30,4 +30,6 @@
 
   <!-- Show in Rviz -->
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find guidebot_navigation)/rviz/show_navigation.rviz"/>
+
+  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>
 </launch>
