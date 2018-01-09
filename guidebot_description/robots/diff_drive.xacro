@@ -8,6 +8,7 @@
   <!-- Set up definitions of parts of robot body -->
   <include filename="../urdf/base/diff_drive_base.urdf.xacro"/>
   <include filename="../urdf/sensors/sweep.urdf.xacro"/>
+  <include filename="../urdf/sensors/imu.urdf.xacro"/>
 
   <!-- Use macros to define the actual robot -->
   <base/>
@@ -19,6 +20,7 @@
   </joint>
 
   <sweep name="sweep" ros_topic="scan" min_angle="${-pi}" max_angle="${pi}"/>
+  <imu/>
 
 
 </robot>

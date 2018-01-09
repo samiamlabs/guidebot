@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- Guidebot differential drive base -->
 
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
 
   <include filename="diff_drive_base.gazebo.xacro"/>
 
@@ -57,14 +57,6 @@
       <child link="base_link"/>
     </joint>
 
-    <!-- IMU link -->
-    <link name="imu_link"/>
-
-    <joint name="imu_joint" type="fixed">
-      <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/>
-      <parent link="base_footprint"/>
-      <child link="imu_link"/>
-    </joint>
 
     <!-- Macros -->
     <drive_wheel name="wheel_right" radius="${wheel_radius}" width="${wheel_width}" separation="${wheel_separation}" reflect="1.0" parent="base_link"/>
@@ -72,6 +64,7 @@
 
     <caster name="front_caster" radius="${caster_radius}" x_offset="0.2" z_offset="${caster_ground_offset - (wheel_radius - caster_radius)}" parent="base_link"/>
     <caster name="rear_caster" radius="${caster_radius}" x_offset="-0.2" z_offset="${caster_ground_offset - (wheel_radius - caster_radius)}" parent="base_link"/>
+
 
     <!-- Gazebo extentions -->
     <diff_drive_base_gazebo/>
