@@ -58,7 +58,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 999999
@@ -75,11 +75,11 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
     - Alpha: 0.699999988
       Class: rviz/Map
       Color Scheme: map
-      Draw Behind: false
+      Draw Behind: true
       Enabled: true
       Name: Map
       Topic: /map
@@ -148,22 +148,22 @@ Visualization Manager:
       Class: rviz/Map
       Color Scheme: costmap
       Draw Behind: false
-      Enabled: true
+      Enabled: false
       Name: Local Costmap
       Topic: /move_base/local_costmap/costmap
       Unreliable: false
       Use Timestamp: false
-      Value: true
+      Value: false
     - Alpha: 0.699999988
       Class: rviz/Map
       Color Scheme: costmap
       Draw Behind: false
-      Enabled: true
+      Enabled: false
       Name: Global Costmap
       Topic: /move_base/global_costmap/costmap
       Unreliable: false
       Use Timestamp: false
-      Value: true
+      Value: false
     - Alpha: 1
       Buffer Length: 1
       Class: rviz/Path
@@ -227,7 +227,7 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: false
-      Enabled: true
+      Enabled: false
       Keep: 100
       Name: Odometry
       Position Tolerance: 0.200000003
@@ -243,7 +243,7 @@ Visualization Manager:
         Value: Arrow
       Topic: /odom
       Unreliable: false
-      Value: true
+      Value: false
     - Alpha: 0.800000012
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -251,17 +251,17 @@ Visualization Manager:
         Min Value: -10
         Value: true
       Axis: Z
-      Channel Name: intensity
+      Channel Name: y
       Class: rviz/PointCloud2
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
       Enabled: true
       Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: 4096
-      Min Color: 0; 0; 0
-      Min Intensity: 0
+      Max Color: 0; 100; 255
+      Max Intensity: 6.71760178
+      Min Color: 100; 0; 0
+      Min Intensity: 3.6574018
       Name: Matched Points
       Position Transformer: XYZ
       Queue Size: 10
@@ -272,7 +272,7 @@ Visualization Manager:
       Topic: /scan_matched_points2
       Unreliable: false
       Use Fixed Frame: true
-      Use rainbow: true
+      Use rainbow: false
       Value: true
     - Alpha: 1
       Class: rviz_plugin_tutorials/Imu
@@ -286,11 +286,11 @@ Visualization Manager:
     - Alpha: 1
       Class: rviz/Polygon
       Color: 25; 255; 0
-      Enabled: true
+      Enabled: false
       Name: Base Footprint
       Topic: /move_base/local_costmap/footprint
       Unreliable: false
-      Value: true
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -316,25 +316,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 10
+      Distance: 17.9466362
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: -0.503164947
+        Y: -1.09067738
+        Z: 2.22257948
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.785398185
+      Pitch: 1.55979633
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.785398185
+      Yaw: 4.70858431
     Saved: ~
 Window Geometry:
   Displays:
