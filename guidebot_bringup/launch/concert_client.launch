@@ -13,6 +13,10 @@
 
  -->
 <launch>
+
+  <param name="robot_description"
+	 command="$(find xacro)/xacro '$(find guidebot_description)/robots/diff_drive.xacro'" />
+
   <!-- ****************************** Robot Args ****************************** -->
   <arg name="robot_name"        default="Ann" doc="used for rocon_uri rapp compatibility checks"/>
   <arg name="robot_type"        default="robot_other" doc="used for rocon_uri rapp compatibility checks"/>
@@ -20,10 +24,10 @@
   <arg name="robot_description" default="To err is human, to 'arr is pirate." doc="informative doc string about this robot"/>
 
   <!-- ****************************** Rapp Manager ****************************** -->
-  <arg name="auto_start_rapp" default="" doc="autostart a rapp, e.g. 'rocon_apps/chirp'"/>
-  <arg name="rapp_package_whitelist" default="[rocon_apps]" doc="comma separated list of package names to restrict rapp search"/>
+  <arg name="auto_start_rapp" default="guidebot_rapps/waypoint_navigation" doc="autostart a rapp, e.g. 'rocon_apps/chirp'"/>
+  <arg name="rapp_package_whitelist" default="[guidebot_rapps]" doc="comma separated list of package names to restrict rapp search"/>
   <arg name="rapp_package_blacklist" default="[]" doc="comma separated list of package names to blacklist from the rapp search"/>/>
-  <arg name="rapp_preferred_configuration_file" default="$(find rocon_app_manager)/param/preferred_default.yaml" doc="pointer to a yaml file listing preferred rapps"/>
+  <arg name="rapp_preferred_configuration_file" default="$(find guidebot_bringup)/param/preferred_default.yaml" doc="pointer to a yaml file listing preferred rapps"/>
   <arg name="screen" default="true" doc="verbose output from running apps"/>
   <!-- See 'http://wiki.ros.org/rocon_app_manager/Tutorials/indigo/Automatic Rapp Installation'
        on how to enable automatic rapp installation -->
@@ -110,10 +114,10 @@
   <!-- Optionally load up a capability server underneath the rapp manager (default: no) -->
 
   <arg name="capabilities"                       default="true" doc="enable/disable a capability server" />
-  <arg name="capabilities_parameters"            default="$(find rocon_app_manager)/param/capabilities.yaml" doc="detailed parameter configuration for the providers" />
+  <arg name="capabilities_parameters"            default="$(find guidebot_bringup)/param/capability_providers.yaml" doc="detailed parameter configuration for the providers" />
   <arg name="capabilities_blacklist"             default="[]" doc="blacklist specific capabilities" />
   <arg name="capabilities_nodelet_manager_name"  default="capability_server_nodelet_manager" />
-  <arg name="capabilities_package_whitelist"     default="[std_capabilities]" doc="get capabilities from these packages only" />
+  <arg name="capabilities_package_whitelist"     default="[guidebot_capabilities]" doc="get capabilities from these packages only" />
   <arg name="capabilities_server_name"           default="capability_server"/>
 
   <group if="$(arg capabilities)">

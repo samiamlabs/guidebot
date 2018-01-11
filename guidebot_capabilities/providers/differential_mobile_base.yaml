@@ -1,0 +1,7 @@
+%YAML 1.1
+---
+name: differential_mobile_base
+spec_version: 1
+spec_type: provider
+implements: guidebot_capabilities/DifferentialMobileBase
+launch_file: 'launch/differential_mobile_base.launch.xml'

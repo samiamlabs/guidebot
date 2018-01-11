@@ -1,0 +1,12 @@
+display:          Waypoint Navigation
+description:      Waypoint Navigation
+compatibility:    rocon:/
+launch:           waypoint_navigation.launch
+icon:             waypoint_navigation.png
+public_interface: waypoint_navigation.interface
+required_capabilities:
+  - name: guidebot_capabilities/Navigation2D
+    interface:
+      topics:
+        requires: []
+        provides: []

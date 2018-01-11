@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
 
   <include filename="drive_wheel.gazebo.xacro"/>
   <include filename="drive_wheel.transmission.xacro"/>

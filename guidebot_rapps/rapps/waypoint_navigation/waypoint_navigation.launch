@@ -1,0 +1,4 @@
+<launch>
+  <node name="temp_relay" pkg="topic_tools" type="relay"
+          args="/woo /woo2"/>
+</launch>

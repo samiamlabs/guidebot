@@ -1,5 +1,7 @@
 <launch>
   <include file="$(find guidebot_gazebo)/launch/simulation.launch"/>
   <include file="$(find guidebot_bringup)/launch/concert_client.launch"/>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find guidebot_navigation)/rviz/show_navigation.rviz"/>
   <node pkg="rqt_gui" type="rqt_gui" name="rqt_gui"/>
 </launch>

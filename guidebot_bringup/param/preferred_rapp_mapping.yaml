@@ -1,6 +1,0 @@
-# Uncomment and modify below to explicitly set the preferred
-# implementation for an ancestor rapp specification:
-preferred:
-  - minireach_rapps/handle_pallets: 'minireach_rapps/handle_pallets_mapping'
-  - minireach_rapps/random_walk: 'minireach_rapps/random_walk_mapping'
-  - rocon_apps/chirp: 'rocon_apps/moo_chirp'

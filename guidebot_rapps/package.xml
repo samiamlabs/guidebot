@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>guidebot_rapps</name>
+  <version>0.0.0</version>
+  <description>The guidebot_rapps package</description>
+
+  <maintainer email="samuellindgren91@gmail.com">Samuel Lindgren</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+    <rocon_app>rapps/waypoint_navigation/waypoint_navigation.rapp</rocon_app>
+  </export>
+</package>

@@ -1,10 +1,6 @@
-# default providers for minireach
+# default providers
 defaults:
-  'std_capabilities/Diagnostics':                 'minireach_capabilities/diagnostics'
-  'std_capabilities/DifferentialMobileBase':      'minireach_capabilities/differential_mobile_base'
-  'std_capabilities/LaserSensor':                 'minireach_capabilities/merged_laserscan'
-  'std_capabilities/RobotStatePublisher':         'minireach_capabilities/robot_state_publisher'
-  'std_capabilities/RGBDSensor':                  'minireach_capabilities/rgbd_sensor'
-  'std_capabilities/Navigation2D':                'minireach_capabilities/amcl_navigation'
-  #'minireach_capabilities/Mapping2D':             'minireach_capabilities/cartographer_mapping'
-  #'minireach_capabilities/RosControl':            'minireach_capabilities/ros_control'
+  'guidebot_capabilities/DifferentialMobileBase': 'guidebot_capabilities/differential_mobile_base'
+  'guidebot_capabilities/RobotStatePublisher':    'guidebot_capabilities/robot_state_publisher'
+  'guidebot_capabilities/Navigation2D':           'guidebot_capabilities/cartographer_navigation'
+  #'std_capabilities/Diagnostics':                 'minireach_capabilities/diagnostics'
