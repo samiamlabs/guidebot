@@ -1,0 +1,5 @@
+# Uncomment and modify below to explicitly set the preferred
+# implementation for an ancestor rapp specification:
+preferred:
+  - minireach_rapps/handle_pallets: 'minireach_rapps/handle_pallets_amcl'
+  - rocon_apps/chirp: 'rocon_apps/moo_chirp'

@@ -1,0 +1,5 @@
+<launch>
+  <include file="$(find guidebot_gazebo)/launch/simulation.launch"/>
+  <include file="$(find guidebot_bringup)/launch/concert_client.launch"/>
+  <node pkg="rqt_gui" type="rqt_gui" name="rqt_gui"/>
+</launch>
