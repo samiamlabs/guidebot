@@ -10,7 +10,11 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <depend>frontier_exploration</depend>
+  <depend>robot_pose_publisher</depend>
+
   <export>
+    <rocon_app>rapps/exploration/exploration.rapp</rocon_app>
     <rocon_app>rapps/waypoint_navigation/waypoint_navigation.rapp</rocon_app>
   </export>
 </package>

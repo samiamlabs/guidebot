@@ -1,0 +1,10 @@
+%YAML 1.1
+---
+name: amcl_navigation
+spec_version: 1
+spec_type: provider
+implements: guidebot_capabilities/Navigation2D
+depends_on:
+   ['guidebot_capabilities/RobotStatePublisher',
+    'guidebot_capabilities/DifferentialMobileBase']
+launch_file: 'launch/amcl_navigation.launch.xml'

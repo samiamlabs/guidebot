@@ -21,6 +21,8 @@
 : ${GUIDEBOT_INTERACTIONS_LIST:=[guidebot_interactions/truckadmin, guidebot_interactions/web, guidebot_interactions/pairing]}
 : ${GUIDEBOT_HUB_URI:=http://localhost:6380}
 : ${GUIDEBOT_CONCERT_DISABLE_ZEROCONF:=false}
+: ${GUIDEBOT_DEFAULT_RAPP:=guidebot_rapps/waypoint_navigation}
+: ${GUIDEBOT_PERFORMANCE:=false}
 : ${JOY_SERIAL_PORT:=/dev/input/js0}
 : ${ROS_MASTER_URI=http://localhost:11311}
 : ${ROS_HOSTNAME=localhost}
@@ -33,6 +35,8 @@ export GUIDEBOT_RAPP_PACKAGE_BLACKLIST
 export GUIDEBOT_INTERACTIONS_LIST
 export GUIDEBOT_HUB_URI
 export GUIDEBOT_CONCERT_DISABLE_ZEROCONF
+export GUIDEBOT_DEFAULT_RAPP
+export GUIDEBOT_PERFORMANCE
 export JOY_SERIAL_PORT
 export ROS_MASTER_URI
 export ROS_HOSTNAME

@@ -7,14 +7,14 @@
   <arg name="laser_topic" default="scan" />
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-    <rosparam file="$(find guidebot_navigation)/config/base2/costmap_common_params.yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find guidebot_navigation)/config/base2/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find guidebot_navigation)/config/base2/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find guidebot_navigation)/config/base2/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find guidebot_navigation)/config/base2/dwa_local_planner_params.yaml" command="load" />
-    <rosparam file="$(find guidebot_navigation)/config/base2/move_base_params.yaml" command="load" />
-    <rosparam file="$(find guidebot_navigation)/config/base2/global_planner_params.yaml" command="load" />
-    <rosparam file="$(find guidebot_navigation)/config/base2/navfn_global_planner_params.yaml" command="load" />
+    <rosparam file="$(find guidebot_navigation)/config/base/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find guidebot_navigation)/config/base/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find guidebot_navigation)/config/base/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find guidebot_navigation)/config/base/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find guidebot_navigation)/config/base/dwa_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find guidebot_navigation)/config/base/move_base_params.yaml" command="load" />
+    <rosparam file="$(find guidebot_navigation)/config/base/global_planner_params.yaml" command="load" />
+    <rosparam file="$(find guidebot_navigation)/config/base/navfn_global_planner_params.yaml" command="load" />
     <!-- external params file that could be loaded into the move_base namespace -->
     <!--
     <rosparam file="$(arg custom_param_file)" command="load" />

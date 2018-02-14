@@ -1,0 +1,12 @@
+display:          Exploration
+description:      Exploration
+compatibility:    rocon:/
+launch:           exploration.launch
+icon:             exploration.png
+public_interface: exploration.interface
+required_capabilities:
+  - name: guidebot_capabilities/Navigation2D
+    interface:
+      topics:
+        requires: []
+        provides: []

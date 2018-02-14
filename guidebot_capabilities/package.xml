@@ -34,6 +34,10 @@
     <capability_provider>
       providers/cartographer_navigation.yaml
     </capability_provider>
+
+    <capability_provider>
+      providers/amcl_navigation.yaml
+    </capability_provider>
   </export>
 
 </package>

@@ -24,7 +24,7 @@
   <arg name="robot_description" default="To err is human, to 'arr is pirate." doc="informative doc string about this robot"/>
 
   <!-- ****************************** Rapp Manager ****************************** -->
-  <arg name="auto_start_rapp" default="guidebot_rapps/waypoint_navigation" doc="autostart a rapp, e.g. 'rocon_apps/chirp'"/>
+  <arg name="auto_start_rapp" default="$(env GUIDEBOT_DEFAULT_RAPP)" doc="autostart a rapp, e.g. 'rocon_apps/chirp'"/>
   <arg name="rapp_package_whitelist" default="[guidebot_rapps]" doc="comma separated list of package names to restrict rapp search"/>
   <arg name="rapp_package_blacklist" default="[]" doc="comma separated list of package names to blacklist from the rapp search"/>/>
   <arg name="rapp_preferred_configuration_file" default="$(find guidebot_bringup)/param/preferred_default.yaml" doc="pointer to a yaml file listing preferred rapps"/>
@@ -148,4 +148,7 @@
       <arg name="webserver_address"  value="$(arg webserver_address)"/>
     </include>
   </group>
+
+  <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+
 </launch>
