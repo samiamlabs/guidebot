@@ -38,6 +38,14 @@
     <capability_provider>
       providers/amcl_navigation.yaml
     </capability_provider>
+
+    <capability_interface>
+      interfaces/Diagnostics.yaml
+    </capability_interface>
+
+    <capability_provider>
+      providers/diagnostics.yaml
+    </capability_provider>
   </export>
 
 </package>

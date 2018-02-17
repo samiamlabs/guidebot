@@ -3,4 +3,4 @@ defaults:
   'guidebot_capabilities/DifferentialMobileBase': 'guidebot_capabilities/differential_mobile_base'
   'guidebot_capabilities/RobotStatePublisher':    'guidebot_capabilities/robot_state_publisher'
   'guidebot_capabilities/Navigation2D':           'guidebot_capabilities/cartographer_navigation'
-  #'std_capabilities/Diagnostics':                 'minireach_capabilities/diagnostics'
+  'guidebot_capabilities/Diagnostics':            'guidebot_capabilities/diagnostics'

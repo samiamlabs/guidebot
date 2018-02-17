@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="guidebot_gazebo" type="fake_diagnostics" name="fake_diagnostic"/>
+  <node pkg="diagnostic_common_diagnostics" type="cpu_monitor.py" name="cpu_monitor"/>
+  <node pkg="diagnostic_common_diagnostics" type="tf_monitor.py" name="tf_monitor"/>
+</launch>

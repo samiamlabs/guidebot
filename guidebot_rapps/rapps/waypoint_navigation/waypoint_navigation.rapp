@@ -10,3 +10,8 @@ required_capabilities:
       topics:
         requires: []
         provides: []
+  - name: guidebot_capabilities/Diagnostics
+    interface:
+      topics:
+        requires: []
+        provides: []
