@@ -14,6 +14,10 @@
 
   <depend>guidebot_description</depend>
 
+  <depend>rostest</depend>
+  <depend>rosunit</depend>
+  <depend>diagnostics</depend>
+
   <depend>gazebo_ros</depend>
   <depend>gazebo_plugins</depend>
   <depend>gazebo_ros_control</depend>
