@@ -19,7 +19,9 @@ class Device:
         self.topic_name = topic_name
         self.deviceId = deviceId
 
-        self.updater = diagnostic_updater.Updater()
+        self.node_name = deviceId + '_driver'
+
+        self.updater = diagnostic_updater.Updater(self.node_name.lower())
         self.updater.setHardwareID(self.deviceId)
 
         frequency_param = '~' + topic_name + '_frequency'
@@ -84,7 +86,7 @@ class Device:
 
 class Battery:
     def __init__(self):
-        self.updater = diagnostic_updater.Updater()
+        self.updater = diagnostic_updater.Updater("battery_driver")
         self.updater.setHardwareID("Battery")
 
         self.level = 0.9
