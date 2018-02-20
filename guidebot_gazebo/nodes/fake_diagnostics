@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 from __future__ import division
 from __future__ import unicode_literals
 
@@ -62,7 +63,7 @@ class Device:
                 self.unstable_status = random.randint(0, 3)
 
             stat.summary(self.unstable_status,
-                         "Unstable connction")
+                         "Unstable connection")
             return stat
 
         if self.connected:
@@ -135,9 +136,8 @@ class FakeDiagnostics():
 
         max_frequency = 0
 
-        set_unstable_service = rospy.Service('~set_unstable',
-                                             Empty,
-                                             self.handle_set_unstable)
+        set_unstable_service = rospy.Service(
+            '~set_unstable', Empty, self.handle_set_unstable)
 
         for key in self.devices:
             max_frequency = max(max_frequency,
