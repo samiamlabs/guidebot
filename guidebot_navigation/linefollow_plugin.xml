@@ -1,0 +1,7 @@
+<library path="lib/liblinefollow_planner">
+  <class name="guidebot_navigation/LinefollowPlanner" type="linefollow_planner::LinefollowPlanner" base_class_type="nav_core::BaseGlobalPlanner">
+    <description>
+      A simple planner that seeks to follow a given path
+    </description>
+  </class>
+</library>

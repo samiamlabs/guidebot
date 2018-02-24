@@ -18,7 +18,14 @@
   <depend>dwa_local_planner</depend>
   <depend>twist_mux</depend>
 
-  <export>
+  <depend>roscpp</depend>
+  <depend>costmap_2d</depend>
+  <depend>pluginlib</depend>
+  <depend>nav_core</depend>
+  <depend>base_local_planner</depend>
+  <depend>eigen</depend>
 
+  <export>
+    <nav_core plugin="${prefix}/linefollow_plugin.xml" />
   </export>
 </package>
