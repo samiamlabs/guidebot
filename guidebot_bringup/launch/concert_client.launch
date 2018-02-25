@@ -13,10 +13,10 @@
 
  -->
 <launch>
-
+<!--
   <param name="robot_description"
 	 command="$(find xacro)/xacro '$(find guidebot_description)/robots/diff_drive.xacro'" />
-
+ -->
   <!-- ****************************** Robot Args ****************************** -->
   <arg name="robot_name"        default="Ann" doc="used for rocon_uri rapp compatibility checks"/>
   <arg name="robot_type"        default="robot_other" doc="used for rocon_uri rapp compatibility checks"/>

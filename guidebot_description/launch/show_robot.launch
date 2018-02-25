@@ -1,6 +1,8 @@
 <launch>
+  <arg name="base" default="$(env GUIDEBOT_BASE)"/>
+
   <param name="robot_description"
-    command="$(find xacro)/xacro '$(find guidebot_description)/robots/diff_drive.xacro'"/>
+    command="$(find xacro)/xacro '$(find guidebot_description)/robots/$(arg base).xacro'"/>
 
   <!-- Send fake joint values -->
   <node name="joint_state_publihser" pkg="joint_state_publisher" type="joint_state_publisher">

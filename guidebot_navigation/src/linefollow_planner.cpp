@@ -1,11 +1,14 @@
 #include <linefollow_planner/linefollow_planner.h>
 #include <pluginlib/class_list_macros.h>
 
-// Register this planner as a BaseGlobalPlanner plugin
+// register this planner as a BaseGlobalPlanner plugin
 PLUGINLIB_EXPORT_CLASS(linefollow_planner::LinefollowPlanner,
                        nav_core::BaseGlobalPlanner)
 
 namespace linefollow_planner {
+
+LinefollowPlanner::LinefollowPlanner()
+    : costmap_ros_(NULL), initialized_(false) {}
 
 LinefollowPlanner::LinefollowPlanner(std::string name,
                                      costmap_2d::Costmap2DROS *costmap_ros)
@@ -25,11 +28,11 @@ void LinefollowPlanner::initialize(std::string name,
     world_model_ = new base_local_planner::CostmapModel(*costmap_);
 
     initialized_ = true;
-  } else {
+  } else
     ROS_WARN("This planner has already been initialized... doing nothing");
-  }
 }
 
+// Not in use
 double LinefollowPlanner::footprintCost(double x_i, double y_i,
                                         double theta_i) {
   if (!initialized_) {
@@ -54,6 +57,7 @@ bool LinefollowPlanner::makePlan(
     const geometry_msgs::PoseStamped &start,
     const geometry_msgs::PoseStamped &goal,
     std::vector<geometry_msgs::PoseStamped> &plan) {
+
   if (!initialized_) {
     ROS_ERROR("The planner has not been initialized, please call initialize() "
               "to use the planner");

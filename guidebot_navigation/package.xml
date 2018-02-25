@@ -25,6 +25,8 @@
   <depend>base_local_planner</depend>
   <depend>eigen</depend>
 
+  <depend>global_planner</depend>
+
   <export>
     <nav_core plugin="${prefix}/linefollow_plugin.xml" />
   </export>

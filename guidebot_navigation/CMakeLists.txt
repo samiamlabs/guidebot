@@ -20,7 +20,7 @@ add_definitions(${EIGEN3_DEFINITIONS})
 
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES carrot_planner
+  LIBRARIES linefollow_planner
   CATKIN_DEPENDS
     roscpp
     pluginlib

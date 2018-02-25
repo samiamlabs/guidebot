@@ -16,6 +16,7 @@
 
 : ${GUIDEBOT_NAME:=Ann}
 : ${GUIDEBOT_SIMULATION:=true}
+: ${GUIDEBOT_BASE:=diff_drive}
 : ${GUIDEBOT_RAPP_PACKAGE_WHITELIST:=[rocon_apps, guidebot_rapps]}
 : ${GUIDEBOT_RAPP_PACKAGE_BLACKLIST:=[]}
 : ${GUIDEBOT_INTERACTIONS_LIST:=[guidebot_interactions/truckadmin, guidebot_interactions/web, guidebot_interactions/pairing]}
@@ -30,6 +31,7 @@
 # Exports
 export GUIDEBOT_NAME
 export GUIDEBOT_SIMULATION
+export GUIDEBOT_BASE
 export GUIDEBOT_RAPP_PACKAGE_WHITELIST
 export GUIDEBOT_RAPP_PACKAGE_BLACKLIST
 export GUIDEBOT_INTERACTIONS_LIST

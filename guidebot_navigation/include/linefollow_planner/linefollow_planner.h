@@ -15,11 +15,9 @@
 #include <base_local_planner/world_model.h>
 
 namespace linefollow_planner {
-
 class LinefollowPlanner : public nav_core::BaseGlobalPlanner {
 public:
   LinefollowPlanner();
-
   LinefollowPlanner(std::string name, costmap_2d::Costmap2DROS *costmap_ros);
 
   void initialize(std::string name, costmap_2d::Costmap2DROS *costmap_ros);
@@ -32,12 +30,12 @@ private:
   costmap_2d::Costmap2DROS *costmap_ros_;
   double step_size_, min_dist_from_robot_;
   costmap_2d::Costmap2D *costmap_;
-  base_local_planner::WorldModel *world_model_;
+  base_local_planner::WorldModel
+      *world_model_; ///< @brief The world model that the controller will use
 
   double footprintCost(double x_i, double y_i, double theta_i);
 
   bool initialized_;
 };
 }; // namespace linefollow_planner
-
 #endif
