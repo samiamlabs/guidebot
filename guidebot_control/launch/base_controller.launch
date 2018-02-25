@@ -24,27 +24,4 @@
     </node>
   </group>
 
-  <!-- Load joint controller configurations from YAML file to parameter server -->
-  <rosparam file="$(find guidebot_control)/config/holonomic_controller.yaml" command="load"/>
-  <rosparam file="$(find guidebot_control)/config/joint_state_controller.yaml" command="load"/>
-
-  <!-- Controllers that come up started -->
-
-  <node
-    name="holonomic_controllers_spawner"
-    pkg="controller_manager"
-    type="spawner"
-    output="screen"
-    args="--timeout 120
-            joint_state_controller
-            bl_steer_joint_position_controller
-            br_steer_joint_position_controller
-            fl_steer_joint_position_controller
-            fr_steer_joint_position_controller"/>
-
-            <!-- bl_wheel_joint_velocity_controller
-            br_wheel_joint_velocity_controller
-            fl_wheel_joint_velocity_controller
-            fr_wheel_joint_velocity_controller -->
-
 </launch>

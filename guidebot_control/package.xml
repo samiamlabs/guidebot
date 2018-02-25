@@ -16,7 +16,8 @@
 
   <depend>controller_manager</depend>
   <depend>joint_state_controller</depend>
-  <depend>effort_controllers</depend>
+  <depend>position_controllers</depend>
+  <depend>velocity_controllers</depend>
 
   <export>
 

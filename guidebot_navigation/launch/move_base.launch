@@ -5,16 +5,17 @@
   <arg name="global_frame_id" default="map"/>
   <arg name="odom_topic" default="odom" />
   <arg name="laser_topic" default="scan" />
+  <arg name="base" default="$(env GUIDEBOT_BASE)"/>
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-    <rosparam file="$(find guidebot_navigation)/config/base/costmap_common_params.yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find guidebot_navigation)/config/base/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find guidebot_navigation)/config/base/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find guidebot_navigation)/config/base/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find guidebot_navigation)/config/base/dwa_local_planner_params.yaml" command="load" />
-    <rosparam file="$(find guidebot_navigation)/config/base/move_base_params.yaml" command="load" />
-    <rosparam file="$(find guidebot_navigation)/config/base/global_planner_params.yaml" command="load" />
-    <rosparam file="$(find guidebot_navigation)/config/base/navfn_global_planner_params.yaml" command="load" />
+    <rosparam file="$(find guidebot_navigation)/config/base/$(arg base)/navigation/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find guidebot_navigation)/config/base/$(arg base)/navigation/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find guidebot_navigation)/config/base/$(arg base)/navigation/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find guidebot_navigation)/config/base/$(arg base)/navigation/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find guidebot_navigation)/config/base/$(arg base)/navigation/dwa_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find guidebot_navigation)/config/base/$(arg base)/navigation/move_base_params.yaml" command="load" />
+    <rosparam file="$(find guidebot_navigation)/config/base/$(arg base)/navigation/global_planner_params.yaml" command="load" />
+    <rosparam file="$(find guidebot_navigation)/config/base/$(arg base)/navigation/navfn_global_planner_params.yaml" command="load" />
     <!-- external params file that could be loaded into the move_base namespace -->
     <!--
     <rosparam file="$(arg custom_param_file)" command="load" />

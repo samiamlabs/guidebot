@@ -11,7 +11,7 @@
   <property name="M_PI" value="3.1415926535897931"/>
 
   <!-- Base footprint offset -->
-  <property name="base_footprint_height_offset" value="0.190"/>
+  <property name="base_footprint_height_offset" value="0.19"/> <!-- old value 0.19 -->
 
   <!-- Inertia -->
   <macro name="cylinder_inertia" params="m r h">
@@ -46,15 +46,30 @@
 
       <!-- TODO: update according to real base properties -->
       <inertial>
+        <mass value="10.0" />
+        <origin xyz="0 0 0" />
+        <cylinder_inertia m="10.0" r="0.3" h="0.2" />
+      </inertial>
+
+    <!--
+      <inertial>
         <origin xyz="-0.00000106 0.00000109 0.0000387" rpy="0 0 0"/>
         <mass value="15.0"/>
         <inertia ixx="0.465408937" ixy="0.002160024" ixz="-0.001760255" iyy="0.483193291" iyz="-0.000655952" izz="0.550939703"/>
       </inertial>
-
+   -->
     </link>
 
     <!-- Base footprint -->
-    <link name="base_footprint"/>
+    <link name="base_footprint">
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="0.01" radius="0.3"/>
+        </geometry>
+        <material name="orange"/>
+      </collision>
+    </link>
 
     <joint name="base_footprint_joint" type="fixed">
       <origin xyz="0 0 ${base_footprint_height_offset}" rpy="0 0 0"/>

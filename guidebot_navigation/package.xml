@@ -22,7 +22,11 @@
   <depend>costmap_2d</depend>
   <depend>pluginlib</depend>
   <depend>nav_core</depend>
+
   <depend>base_local_planner</depend>
+  <depend>eband_local_planner</depend>
+  <depend>teb_local_planner</depend>
+
   <depend>eigen</depend>
 
   <depend>global_planner</depend>
