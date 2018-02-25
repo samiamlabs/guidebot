@@ -4,6 +4,22 @@
   <arg name="config_locks"  default="$(find guidebot_navigation)/config/twist_mux_locks.yaml"/>
   <arg name="config_topics" default="$(find guidebot_navigation)/config/twist_mux_topics.yaml"/>
 
+  <arg name="base" default="$(env GUIDEBOT_BASE)"/>
+
+  <arg name="use_fake_odom" default="$(env GUIDEBOT_FAKE_ODOM)"/>
+
+  <!-- Odometry -->
+  <group unless="$(arg use_fake_odom)">
+    <node name="odom_relay" pkg="topic_tools" type="relay"
+            args="/mobile_base_controller/odom /odom"/>
+  </group>
+
+  <group if="$(arg use_fake_odom)">
+    <node name="fake_odom_broadcaster" pkg="guidebot_navigation" type="fake_odom_broadcaster"/>
+    <node name="odom_relay" pkg="topic_tools" type="relay"
+            args="/base_pose_ground_truth /odom"/>
+  </group>
+
   <node pkg="twist_mux" type="twist_mux" name="twist_mux" output="screen">
     <remap from="cmd_vel_out" to="$(arg cmd_vel_out)"/>
     <rosparam file="$(arg config_locks)"  command="load"/>
@@ -15,5 +31,5 @@
     <remap from="marker" to="twist_marker"/>
   </node>
 
-  <include file="$(find guidebot_control)/launch/diff_drive_controllers.launch"/>
+  <include file="$(find guidebot_control)/launch/$(arg base)_controllers.launch"/>
 </launch>

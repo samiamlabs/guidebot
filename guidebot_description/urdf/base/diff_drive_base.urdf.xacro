@@ -5,8 +5,8 @@
 
   <include filename="diff_drive_base.gazebo.xacro"/>
 
-  <include filename="../wheels/drive_wheel.urdf.xacro"/>
-  <include filename="../wheels/caster.urdf.xacro"/>
+  <include filename="../wheels/diff_drive/drive_wheel.urdf.xacro"/>
+  <include filename="../wheels/diff_drive/caster.urdf.xacro"/>
 
   <!-- Drive wheel characteristics -->
   <property name="wheel_radius"     value="0.13"/>

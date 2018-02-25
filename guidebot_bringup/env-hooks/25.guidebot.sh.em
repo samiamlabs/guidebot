@@ -24,6 +24,7 @@
 : ${GUIDEBOT_CONCERT_DISABLE_ZEROCONF:=false}
 : ${GUIDEBOT_DEFAULT_RAPP:=guidebot_rapps/waypoint_navigation}
 : ${GUIDEBOT_PERFORMANCE:=false}
+: ${GUIDEBOT_FAKE_ODOM:=false}
 : ${JOY_SERIAL_PORT:=/dev/input/js0}
 : ${ROS_MASTER_URI=http://localhost:11311}
 : ${ROS_HOSTNAME=localhost}
@@ -39,6 +40,7 @@ export GUIDEBOT_HUB_URI
 export GUIDEBOT_CONCERT_DISABLE_ZEROCONF
 export GUIDEBOT_DEFAULT_RAPP
 export GUIDEBOT_PERFORMANCE
+export GUIDEBOT_FAKE_ODOM
 export JOY_SERIAL_PORT
 export ROS_MASTER_URI
 export ROS_HOSTNAME

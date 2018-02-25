@@ -5,14 +5,13 @@
 
   <include filename="holonomic_base.gazebo.xacro"/>
 
-  <include filename="../wheels/drive_wheel.urdf.xacro"/>
-  <include filename="../wheels/caster.urdf.xacro"/>
+  <include filename="../wheels/holonomic/wheel_assembly.urdf.xacro"/>
 
   <!-- Constants -->
   <property name="M_PI" value="3.1415926535897931"/>
-  <property name="mx160_effort" value="8.3"/>
-  <!-- 8.3 N/m ?? 45rpm -> 4.71 rad/s-->
-  <property name="mx160_velocity" value="4.71"/>
+
+  <!-- Base footprint offset -->
+  <property name="base_footprint_height_offset" value="0.190"/>
 
   <!-- Inertia -->
   <macro name="cylinder_inertia" params="m r h">
@@ -23,143 +22,8 @@
     <inertia ixx="${m*(y*y+z*z)/12}" ixy="0" ixz="0" iyy="${m*(z*z+x*x)/12}" iyz="0" izz="${m*(x*x+y*y)/12}"/>
   </macro>
 
-  <!-- Drive wheel characteristics -->
-  <property name="wheel_radius" value="0.05"/>
-  <property name="wheel_width" value="0.02"/>
-
-  <!-- <property name="wheel_separation" value="0.65"/> <property name="wheel_torque" value="6.0"/> <property name="wheel_velocity" value="1.0"/> -->
-
-  <!-- Caster characteristics -->
-  <property name="caster_offset_x" value="0.15"/>
-  <property name="caster_offset_y" value="0.15"/>
-  <property name="caster_offset_z" value="0.14"/>
-
-  <!-- <property name="caster_radius" value="0.07"/> <property name="caster_ground_offset" value="0.005"/> -->
-
   <!-- Base -->
   <macro name="base">
-
-    <!-- Gazebo extentions -->
-    <base_gazebo/>
-
-    <!-- Wheel Tire-->
-    <xacro:macro name="odom_wheel_tire" params="parent suffix offset">
-      <joint name="${parent}_wheel_tire_${suffix}" type="fixed">
-        <origin xyz="0 0 ${offset}" rpy="0 0 0"/>
-        <parent link="${parent}_wheel_link"/>
-        <child link="${parent}_wheel_tire_${suffix}_link"/>
-      </joint>
-
-      <link name="${parent}_wheel_tire_${suffix}_link">
-        <inertial>
-          <mass value="1.0"/>
-          <origin xyz="0 0 0"/>
-          <cylinder_inertia m="1.0" r="${wheel_radius}" h="${wheel_width}"/>
-        </inertial>
-        <visual>
-          <geometry>
-            <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
-          </geometry>
-          <material name="DarkGrey"/>
-        </visual>
-        <collision>
-          <geometry>
-            <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
-          </geometry>
-        </collision>
-      </link>
-
-      <xacro:gazebo_tire_link name="${parent}_wheel_tire_${suffix}_link" color="Black"/>
-
-    </xacro:macro>
-
-    <!-- Wheel Shaft -->
-    <xacro:macro name="odom_wheel_schaft" params="suffix rot_axis">
-
-      <joint name="${suffix}_wheel_joint" type="continuous">
-        <axis xyz="0 0 ${rot_axis}"/>
-        <limit effort="${mx160_effort*500}" velocity="${mx160_velocity*100}"/>
-        <dynamics damping="0.0" friction="0.0"/>
-        <origin xyz="0 0 -${caster_offset_z}" rpy="-${M_PI/2} 0 0"/>
-        <parent link="${suffix}_rotation_link"/>
-        <child link="${suffix}_wheel_link"/>
-      </joint>
-
-      <xacro:simple_transmission name="${suffix}_wheel_joint" interface="EffortJointInterface"/>
-
-      <link name="${suffix}_wheel_link">
-        <inertial>
-          <mass value="5.0"/>
-          <origin xyz="0 0 0"/>
-          <cylinder_inertia m="5.0" r="0.02" h="0.100"/>
-        </inertial>
-        <visual>
-          <geometry>
-            <cylinder length="0.100" radius="0.02"/>
-          </geometry>
-          <material name="Grey"/>
-        </visual>
-        <collision>
-          <geometry>
-            <cylinder length="${0.100 - wheel_width*2 - 0.01}" radius="0.02"/>
-            <!-- avoid collision to tire -->
-          </geometry>
-        </collision>
-      </link>
-
-      <xacro:gazebo_tire_link name="${suffix}_wheel_link" color="Grey"/>
-
-    </xacro:macro>
-
-    <!-- Wheel Steer -->
-    <xacro:macro name="odom_wheel_rotate" params="suffix">
-      <joint name="${suffix}_rotation_joint" type="revolute">
-        <axis xyz="0 0 -1"/>
-        <limit lower="${-90*M_PI/180.0}" upper="${90*M_PI/180.0}" effort="${mx160_effort}" velocity="${mx160_velocity}"/>
-        <dynamics damping="0.0" friction="0.0"/>
-        <xacro:insert_block name="origin"/>
-        <parent link="base_link"/>
-        <child link="${suffix}_rotation_link"/>
-      </joint>
-
-      <xacro:simple_transmission name="${suffix}_rotation_joint" interface="EffortJointInterface"/>
-
-      <link name="${suffix}_rotation_link">
-        <inertial>
-          <mass value="1.0"/>
-          <origin xyz="0 0 -${caster_offset_z/2}" rpy="0 0 0"/>
-          <cylinder_inertia m="1.0" r="0.015" h="${caster_offset_z}"/>
-        </inertial>
-        <visual>
-          <origin xyz="0 0 -${caster_offset_z/2}" rpy="0 0 0"/>
-          <geometry>
-            <cylinder length="${caster_offset_z}" radius="0.015"/>
-          </geometry>
-          <material name="LightGrey"/>
-        </visual>
-        <collision>
-          <origin xyz="0 0 -${caster_offset_z/2}" rpy="0 0 0"/>
-          <geometry>
-            <cylinder length="${caster_offset_z-0.05}" radius="0.015"/>
-            <!-- avoid collision for wheel_schaft radius(0.02) -->
-          </geometry>
-        </collision>
-      </link>
-
-      <xacro:gazebo_base_link name="${suffix}_rotation_link" color="White"/>
-
-    </xacro:macro>
-
-    <!-- Wheel Assembly -->
-    <xacro:macro name="odom_wheel" params="suffix *origin rot_axis">
-
-      <xacro:odom_wheel_rotate suffix="${suffix}"/>
-      <xacro:odom_wheel_schaft suffix="${suffix}" rot_axis="${rot_axis}"/>
-      <xacro:odom_wheel_tire parent="${suffix}" suffix="l" offset="${0.05-wheel_width/2}"/>
-      <xacro:odom_wheel_tire parent="${suffix}" suffix="r" offset="-${0.05-wheel_width/2}"/>
-
-    </xacro:macro>
-
     <!-- Base -->
 
     <link name="base_link">
@@ -193,28 +57,27 @@
     <link name="base_footprint"/>
 
     <joint name="base_footprint_joint" type="fixed">
-      <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/>
+      <origin xyz="0 0 ${base_footprint_height_offset}" rpy="0 0 0"/>
       <parent link="base_footprint"/>
       <child link="base_link"/>
     </joint>
 
     <!-- Macros -->
-    <xacro:odom_wheel suffix="fl" rot_axis="1">
+    <xacro:wheel_assembly suffix="fl" rot_axis="1">
       <origin xyz="${caster_offset_x} ${caster_offset_y} 0.0" rpy="0 0 0"/>
-    </xacro:odom_wheel>
-    <xacro:odom_wheel suffix="fr" rot_axis="-1">
+    </xacro:wheel_assembly>
+    <xacro:wheel_assembly suffix="fr" rot_axis="-1">
       <origin xyz="${caster_offset_x} -${caster_offset_y} 0.0" rpy="0 0 0"/>
-    </xacro:odom_wheel>
-    <xacro:odom_wheel suffix="bl" rot_axis="1">
+    </xacro:wheel_assembly>
+    <xacro:wheel_assembly suffix="bl" rot_axis="1">
       <origin xyz="-${caster_offset_x} ${caster_offset_y} 0.0" rpy="0 0 0"/>
-    </xacro:odom_wheel>
-    <xacro:odom_wheel suffix="br" rot_axis="-1">
+    </xacro:wheel_assembly>
+    <xacro:wheel_assembly suffix="br" rot_axis="-1">
       <origin xyz="-${caster_offset_x} -${caster_offset_y} 0.0" rpy="0 0 0"/>
-    </xacro:odom_wheel>
+    </xacro:wheel_assembly>
 
-    <!-- <drive_wheel name="wheel_right" radius="${wheel_radius}" width="${wheel_width}" separation="${wheel_separation}" reflect="1.0" parent="base_link"/> <drive_wheel name="wheel_left" radius="${wheel_radius}" width="${wheel_width}"
-    separation="${wheel_separation}" reflect="-1.0" parent="base_link"/> <caster name="front_caster" radius="${caster_radius}" x_offset="0.2" z_offset="${caster_ground_offset - (wheel_radius - caster_radius)}" parent="base_link"/> <caster
-    name="rear_caster" radius="${caster_radius}" x_offset="-0.2" z_offset="${caster_ground_offset - (wheel_radius - caster_radius)}" parent="base_link"/> -->
+    <!-- Gazebo extentions -->
+    <base_gazebo/>
 
   </macro>
 

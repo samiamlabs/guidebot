@@ -1,11 +1,9 @@
 <launch>
-  <node name="odom_relay" pkg="topic_tools" type="relay"
-          args="/mobile_base_controller/odom /odom"/>
 
   <include file="$(find guidebot_navigation)/launch/cartographer_sweep_imu.launch"/>
 
   <include file="$(find guidebot_navigation)/launch/move_base.launch"/>
-  
+
   <!-- Robot pose publisher -->
   <node pkg="robot_pose_publisher" name="robot_pose_publisher" type="robot_pose_publisher">
     <param name="is_stamped" value="true"/>
