@@ -31,6 +31,16 @@ def get_angle_to_next_point(x, y, x_last, y_last):
     return orientation_from_yaw(theta_radians)
 
 
+def yaw_from_orientation(orientation):
+    quaternion = (
+        orientation.x,
+        orientation.y,
+        orientation.z,
+        orientation.w)
+    euler = euler_from_quaternion(quaternion)
+    return euler[2] * 180 / math.pi
+
+
 class PathFromPoints():
     def __init__(self):
         rospy.init_node('fake_odom_broadcaster')
@@ -54,12 +64,12 @@ class PathFromPoints():
         rospy.spin()
 
     def handle_clear(self, req):
-        rospy.logwarn('Clearing linefollow path')
+        rospy.loginfo('Clearing linefollow path')
         self._path = Path()
         return EmptyResponse()
 
     def clicked_point_cb(self, msg):
-        rospy.logwarn('Adding point x: %f, y: %f', msg.point.x, msg.point.y)
+        rospy.loginfo('Adding point x: %f, y: %f', msg.point.x, msg.point.y)
         rospy.sleep(0)
 
         if len(self._path.poses) == 0:
@@ -84,6 +94,9 @@ class PathFromPoints():
 
         self._pose_array.poses.append(pose_stamped.pose)
         self._pose_array_publisher.publish(self._pose_array)
+
+        # for index, pose in enumerate(self._path.poses):
+        #     rospy.loginfo("index: %d yaw: %f", index, yaw_from_orientation(pose.pose.orientation))
 
 
 if __name__ == '__main__':

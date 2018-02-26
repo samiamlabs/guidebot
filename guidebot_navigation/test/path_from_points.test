@@ -1,0 +1,12 @@
+<launch>
+
+  <node name="path_from_points" pkg="guidebot_navigation" type="path_from_points" output="screen"/>
+
+  <test test-name="path_from_points_test" pkg="guidebot_navigation" type="path_from_points_test.py">
+    <rosparam>
+      test_duration: 30
+    </rosparam>
+  </test>
+
+
+</launch>

@@ -49,11 +49,11 @@
         <material name="DarkGrey"/>
       </visual>
       <collision>
-        <!--
+
         <geometry>
           <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
         </geometry>
-         -->
+
       </collision>
     </link>
 
