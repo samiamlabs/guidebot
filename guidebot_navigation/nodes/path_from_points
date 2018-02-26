@@ -1,0 +1,90 @@
+#!/usr/bin/env python
+import roslib
+import rospy
+
+import tf
+from tf.transformations import quaternion_from_euler, euler_from_quaternion
+
+from geometry_msgs.msg import PoseArray, PointStamped, PoseStamped, Quaternion
+from nav_msgs.msg import Path
+
+from std_srvs.srv import *
+
+import math
+
+
+def orientation_from_yaw(yaw):
+    return Quaternion(*quaternion_from_euler(0, 0, yaw))
+
+
+def get_angle_to_next_point(x, y, x_last, y_last):
+    x_delta = x - x_last
+    y_delta = -(y - y_last)
+
+    theta_radians = math.atan2(x_delta, y_delta)
+
+    if theta_radians >= 0 and theta_radians < math.pi:
+        theta_radians += 3 * math.pi / 2
+    else:
+        theta_radians -= math.pi / 2
+
+    return orientation_from_yaw(theta_radians)
+
+
+class PathFromPoints():
+    def __init__(self):
+        rospy.init_node('fake_odom_broadcaster')
+
+        self._path = Path()
+        self._path.header.frame_id = 'map'
+
+        self._pose_array = PoseArray()
+        self._pose_array.header.frame_id = 'map'
+
+        rospy.Subscriber('clicked_point', PointStamped, self.clicked_point_cb)
+
+        self._path_publisher = rospy.Publisher(
+            'linefollow_path', Path, queue_size=10)
+
+        self._pose_array_publisher = rospy.Publisher(
+            'linefollow_pose_array', PoseArray, queue_size=10)
+
+        clearService = rospy.Service(
+            'clear_linefollow_path', Empty, self.handle_clear)
+        rospy.spin()
+
+    def handle_clear(self, req):
+        rospy.logwarn('Clearing linefollow path')
+        self._path = Path()
+        return EmptyResponse()
+
+    def clicked_point_cb(self, msg):
+        rospy.logwarn('Adding point x: %f, y: %f', msg.point.x, msg.point.y)
+        rospy.sleep(0)
+
+        if len(self._path.poses) == 0:
+            orientation = orientation_from_yaw(0)
+        else:
+            x = msg.point.x
+            y = msg.point.y
+            x_last = self._path.poses[-1].pose.position.x
+            y_last = self._path.poses[-1].pose.position.y
+
+            orientation = get_angle_to_next_point(x, y, x_last, y_last)
+            self._path.poses[-1].pose.orientation = orientation
+            self._pose_array.poses[-1].orientation = orientation
+
+        pose_stamped = PoseStamped()
+        pose_stamped.header.frame_id = 'map'
+        pose_stamped.pose.position = msg.point
+        pose_stamped.pose.orientation = orientation
+
+        self._path.poses.append(pose_stamped)
+        self._path_publisher.publish(self._path)
+
+        self._pose_array.poses.append(pose_stamped.pose)
+        self._pose_array_publisher.publish(self._pose_array)
+
+
+if __name__ == '__main__':
+    PathFromPoints()
