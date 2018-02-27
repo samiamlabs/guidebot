@@ -43,15 +43,12 @@ def yaw_from_orientation(orientation):
 
 class PathFromPoints():
     def __init__(self):
-        rospy.init_node('fake_odom_broadcaster')
+        rospy.init_node('path_from_points')
 
-        self._path = Path()
-        self._path.header.frame_id = 'map'
+        self.clear()
 
-        self._pose_array = PoseArray()
-        self._pose_array.header.frame_id = 'map'
-
-        rospy.Subscriber('clicked_point', PointStamped, self.clicked_point_cb)
+        rospy.Subscriber('/clicked_point', PointStamped, self.clicked_point_cb)
+        rospy.Subscriber('/move_base_simple/goal', PoseStamped, self.move_base_goal_cb)
 
         self._path_publisher = rospy.Publisher(
             'linefollow_path', Path, queue_size=10)
@@ -61,12 +58,41 @@ class PathFromPoints():
 
         clearService = rospy.Service(
             'clear_linefollow_path', Empty, self.handle_clear)
+
+        rospy.Subscriber('/move_base/GlobalPlanner/plan', Path, self.global_plan_cb)
+
+        self.global_pose_array_publisher = rospy.Publisher(
+            '/global_plan_array', PoseArray, queue_size=10)
+
         rospy.spin()
+
+    def global_plan_cb(self, msg):
+        pose_array = PoseArray()
+        pose_array.header.frame_id = 'map'
+        for pose_stamped in msg.poses:
+            pose_array.poses.append(pose_stamped.pose)
+
+        self.global_pose_array_publisher.publish(pose_array)
+
+
+
+    def clear(self):
+        self._path = Path()
+        self._path.header.frame_id = 'map'
+
+        self._pose_array = PoseArray()
+        self._pose_array.header.frame_id = 'map'
+
 
     def handle_clear(self, req):
         rospy.loginfo('Clearing linefollow path')
-        self._path = Path()
+        self.clear()
+
         return EmptyResponse()
+
+    def move_base_goal_cb(self, msg):
+        rospy.loginfo("Move base goal received, clearing path")
+        self.clear()
 
     def clicked_point_cb(self, msg):
         rospy.loginfo('Adding point x: %f, y: %f', msg.point.x, msg.point.y)

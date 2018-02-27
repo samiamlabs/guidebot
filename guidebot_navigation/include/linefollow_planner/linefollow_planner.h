@@ -7,6 +7,7 @@
 
 #include <angles/angles.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <nav_msgs/Path.h>
 
 #include <tf/tf.h>
 #include <tf/transform_datatypes.h>
@@ -26,16 +27,23 @@ public:
                 const geometry_msgs::PoseStamped &goal,
                 std::vector<geometry_msgs::PoseStamped> &plan);
 
-private:
-  costmap_2d::Costmap2DROS *costmap_ros_;
-  double step_size_, min_dist_from_robot_;
-  costmap_2d::Costmap2D *costmap_;
-  base_local_planner::WorldModel
-      *world_model_; ///< @brief The world model that the controller will use
+  void pathCallback(const nav_msgs::Path path);
 
-  double footprintCost(double x_i, double y_i, double theta_i);
+  private:
+    costmap_2d::Costmap2DROS *costmap_ros_;
+    double step_size_, min_dist_from_robot_;
+    costmap_2d::Costmap2D *costmap_;
+    base_local_planner::WorldModel
+        *world_model_; ///< @brief The world model that the controller will use
 
-  bool initialized_;
-};
+    double footprintCost(double x_i, double y_i, double theta_i);
+
+    bool initialized_;
+
+    nav_msgs::Path linefollow_path_;
+    ros::Subscriber path_sub_;
+    ros::Publisher plan_pub_;
+
+  };
 }; // namespace linefollow_planner
 #endif

@@ -123,52 +123,6 @@ Visualization Manager:
       Unreliable: false
       Use Timestamp: false
       Value: false
-    - Alpha: 1
-      Buffer Length: 1
-      Class: rviz/Path
-      Color: 0; 0; 255
-      Enabled: true
-      Head Diameter: 0.300000012
-      Head Length: 0.200000003
-      Length: 0.300000012
-      Line Style: Lines
-      Line Width: 0.0299999993
-      Name: Global Path
-      Offset:
-        X: 0
-        Y: 0
-        Z: 0
-      Pose Color: 255; 85; 255
-      Pose Style: None
-      Radius: 0.0299999993
-      Shaft Diameter: 0.100000001
-      Shaft Length: 0.100000001
-      Topic: /move_base/GlobalPlanner/plan
-      Unreliable: false
-      Value: true
-    - Alpha: 1
-      Buffer Length: 1
-      Class: rviz/Path
-      Color: 255; 70; 0
-      Enabled: true
-      Head Diameter: 0.300000012
-      Head Length: 0.200000003
-      Length: 0.300000012
-      Line Style: Lines
-      Line Width: 0.0299999993
-      Name: Local Path
-      Offset:
-        X: 0
-        Y: 0
-        Z: 0
-      Pose Color: 255; 85; 255
-      Pose Style: None
-      Radius: 0.0299999993
-      Shaft Diameter: 0.100000001
-      Shaft Length: 0.100000001
-      Topic: /move_base/DWAPlannerROS/local_plan
-      Unreliable: false
-      Value: true
     - Angle Tolerance: 0.200000003
       Class: rviz/Odometry
       Covariance:
@@ -266,24 +220,24 @@ Visualization Manager:
       Reference Frame: base_footprint
       Value: true
     - Class: rviz/MarkerArray
-      Enabled: false
+      Enabled: true
       Marker Topic: /move_base/EBandPlannerROS/eband_visualization_array
       Name: EBAND
       Namespaces:
-        {}
+        bubbles: true
       Queue Size: 100
-      Value: false
+      Value: true
     - Alpha: 1
       Buffer Length: 1
       Class: rviz/Path
-      Color: 25; 255; 0
+      Color: 0; 0; 255
       Enabled: true
       Head Diameter: 0.300000012
       Head Length: 0.200000003
       Length: 0.300000012
       Line Style: Lines
       Line Width: 0.0299999993
-      Name: Path
+      Name: Global Path
       Offset:
         X: 0
         Y: 0
@@ -293,7 +247,53 @@ Visualization Manager:
       Radius: 0.0299999993
       Shaft Diameter: 0.100000001
       Shaft Length: 0.100000001
-      Topic: /linefollow_path
+      Topic: /move_base/LinefollowPlanner/global_plan
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 255; 70; 0
+      Enabled: true
+      Head Diameter: 0.300000012
+      Head Length: 0.200000003
+      Length: 0.300000012
+      Line Style: Lines
+      Line Width: 0.0299999993
+      Name: Local Path
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: None
+      Radius: 0.0299999993
+      Shaft Diameter: 0.100000001
+      Shaft Length: 0.100000001
+      Topic: /move_base/EBandPlannerROS/local_plan
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 0; 255; 0
+      Enabled: true
+      Head Diameter: 0.300000012
+      Head Length: 0.200000003
+      Length: 0.300000012
+      Line Style: Lines
+      Line Width: 0.0299999993
+      Name: Linefollow
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: None
+      Radius: 0.0299999993
+      Shaft Diameter: 0.100000001
+      Shaft Length: 0.100000001
+      Topic: /move_base/LinefollowPlanner/linefollow_path
       Unreliable: false
       Value: true
     - Alpha: 1
@@ -305,11 +305,11 @@ Visualization Manager:
       Enabled: true
       Head Length: 0.0700000003
       Head Radius: 0.0299999993
-      Name: PoseArray
+      Name: Linefollow arrows
       Shaft Length: 0.230000004
       Shaft Radius: 0.00999999978
       Shape: Arrow (Flat)
-      Topic: /linefollow_pose_array
+      Topic: /move_base/LinefollowPlanner/linefollow_pose_array
       Unreliable: false
       Value: true
   Enabled: true
@@ -337,25 +337,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 10.1877575
+      Distance: 7.08918095
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.477047354
-        Y: 1.9213469
-        Z: -0.759975672
+        X: -3.70577097
+        Y: 0.638837337
+        Z: 1.6819582
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 1.02414358
+      Pitch: 1.56979632
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 6.17101574
+      Yaw: 0.677831709
     Saved: ~
 Window Geometry:
   Displays:
@@ -373,5 +373,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 956
-  X: 2880
+  X: 1920
   Y: 38

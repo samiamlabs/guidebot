@@ -28,6 +28,7 @@
   <depend>teb_local_planner</depend>
 
   <depend>eigen</depend>
+  <depend>python-scipy</depend>
 
   <depend>global_planner</depend>
 

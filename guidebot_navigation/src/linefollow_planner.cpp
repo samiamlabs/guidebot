@@ -16,8 +16,14 @@ LinefollowPlanner::LinefollowPlanner(std::string name,
   initialize(name, costmap_ros);
 }
 
+void LinefollowPlanner::pathCallback(nav_msgs::Path path) {
+  linefollow_path_ = path;
+  ROS_INFO("Setting path");
+}
+
 void LinefollowPlanner::initialize(std::string name,
                                    costmap_2d::Costmap2DROS *costmap_ros) {
+
   if (!initialized_) {
     costmap_ros_ = costmap_ros;
     costmap_ = costmap_ros_->getCostmap();
@@ -28,6 +34,10 @@ void LinefollowPlanner::initialize(std::string name,
     world_model_ = new base_local_planner::CostmapModel(*costmap_);
 
     initialized_ = true;
+
+    path_sub_ = private_nh.subscribe<nav_msgs::Path>("linefollow_path", 1, &LinefollowPlanner::pathCallback, this);
+    plan_pub_ = private_nh.advertise<nav_msgs::Path>("global_plan", 1);
+
   } else
     ROS_WARN("This planner has already been initialized... doing nothing");
 }
@@ -131,6 +141,11 @@ bool LinefollowPlanner::makePlan(
   geometry_msgs::PoseStamped new_goal = goal;
   tf::Quaternion goal_quat = tf::createQuaternionFromYaw(target_yaw);
 
+  for(const geometry_msgs::PoseStamped & pose : linefollow_path_.poses){
+    ROS_INFO("adding pose plan");
+    plan.push_back(pose);
+  }
+
   new_goal.pose.position.x = target_x;
   new_goal.pose.position.y = target_y;
 
@@ -140,6 +155,13 @@ bool LinefollowPlanner::makePlan(
   new_goal.pose.orientation.w = goal_quat.w();
 
   plan.push_back(new_goal);
+
+  nav_msgs::Path path;
+  path.header.frame_id = "map";
+  path.poses = plan;
+
+  plan_pub_.publish(path);
+
   return (done);
 }
 
