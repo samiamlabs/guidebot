@@ -16,6 +16,7 @@
     <rosparam file="$(find guidebot_navigation)/config/base/$(arg base)/navigation/move_base_params.yaml" command="load" />
     <rosparam file="$(find guidebot_navigation)/config/base/$(arg base)/navigation/global_planner_params.yaml" command="load" />
     <rosparam file="$(find guidebot_navigation)/config/base/$(arg base)/navigation/navfn_global_planner_params.yaml" command="load" />
+    <rosparam file="$(find guidebot_navigation)/config/base/$(arg base)/navigation/teb_local_planner_params.yaml" command="load" />
     <!-- external params file that could be loaded into the move_base namespace -->
     <!--
     <rosparam file="$(arg custom_param_file)" command="load" />

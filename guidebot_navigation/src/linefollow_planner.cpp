@@ -137,7 +137,7 @@ bool LinefollowPlanner::makePlan(
     scale -= dScale;
   }
 
-  plan.push_back(start);
+  // plan.push_back(start);
   geometry_msgs::PoseStamped new_goal = goal;
   tf::Quaternion goal_quat = tf::createQuaternionFromYaw(target_yaw);
 

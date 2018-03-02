@@ -32,4 +32,8 @@
   </node>
 
   <include file="$(find guidebot_control)/launch/$(arg base)_controllers.launch"/>
+
+  <!-- Teleop -->
+  <include file="$(find guidebot_navigation)/launch/joystick_teleop.launch"/>
+
 </launch>

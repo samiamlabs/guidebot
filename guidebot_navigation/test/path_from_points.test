@@ -4,7 +4,7 @@
 
   <test test-name="path_from_points_test" pkg="guidebot_navigation" type="path_from_points_test.py">
     <rosparam>
-      test_duration: 5
+      test_duration: 10
     </rosparam>
   </test>
 

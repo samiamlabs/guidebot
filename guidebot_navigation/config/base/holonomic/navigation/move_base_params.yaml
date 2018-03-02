@@ -15,9 +15,9 @@ oscillation_timeout: 10.0
 oscillation_distance: 0.2
 
 # local planner - default is tjrajectory rollout
-base_local_planner: "eband_local_planner/EBandPlannerROS" #alternatives "dwa_local_planner/DWAPlannerROS" base_local_planner/TrajectoryPlannerROS eband_local_planner/EBandPlannerROS ftc_local_planner/FTCPlanner
+base_local_planner: "eband_local_planner/EBandPlannerROS" #alternatives "dwa_local_planner/DWAPlannerROS" base_local_planner/TrajectoryPlannerROS eband_local_planner/EBandPlannerROS ftc_local_planner/FTCPlanner teb_local_planner/TebLocalPlannerROS
 
-base_global_planner: "global_planner/GlobalPlanner" #alternatives: navfn/NavfnROS, global_planner/GlobalPlanner, carrot_planner/CarrotPlanner
+base_global_planner: "global_planner/GlobalPlanner" #alternatives: navfn/NavfnROS, global_planner/GlobalPlanner, carrot_planner/CarrotPlanner guidebot_navigation/LinefollowPlanner
 
 EBandPlannerROS:
    xy_goal_tolerance: 0.03

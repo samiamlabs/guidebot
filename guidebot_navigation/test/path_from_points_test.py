@@ -19,7 +19,7 @@ from geometry_msgs.msg import PointStamped
 
 from std_srvs.srv import *
 
-import math
+import numpy as np
 
 
 class TestPathFromPoints(unittest.TestCase):
@@ -53,16 +53,30 @@ class TestPathFromPoints(unittest.TestCase):
         except rospy.ServiceException, e:
             print "Service call failed: %s" % e
 
+    def set_interpolate(self, interpolate):
+        rospy.wait_for_service('set_interpolate')
+
+        try:
+            set_bool = rospy.ServiceProxy('set_interpolate', SetBool)
+            req = SetBoolRequest()
+            req.data = interpolate
+            resp = set_bool(req)
+        except rospy.ServiceException, e:
+            print "Service call failed: %s" % e
+
     def path_cb(self, msg):
+        # rospy.logerr("got path, number of poses: %d", len(msg.poses))
         self._path = msg
         self._path_received = True
 
     def test_all(self):
-        self.publishes_paths()
-        self.has_correct_positions()
-        self.has_correct_angles()
+        self.it_publishes_paths()
+        self.it_has_correct_positions()
+        self.it_has_correct_angles()
+        self.it_interpolates_points()
 
-    def publishes_paths(self):
+    def it_publishes_paths(self):
+        self.set_interpolate(False)
         self.clear_path()
 
         point_stamped = create_point_stamped(0, 0)
@@ -81,7 +95,8 @@ class TestPathFromPoints(unittest.TestCase):
 
         self.assertTrue(this_path_received, "No path received")
 
-    def has_correct_positions(self):
+    def it_has_correct_positions(self):
+        rospy.logerr("Starting position test")
         self.clear_path()
 
         # rospy.sleep(1)
@@ -117,7 +132,8 @@ class TestPathFromPoints(unittest.TestCase):
             self._path.poses[1].pose.position.y, 3.0, 7,
             "Second position y is not 3.0")
 
-    def has_correct_angles(self):
+    def it_has_correct_angles(self):
+        rospy.logerr("Starting angle test")
         self.clear_path()
 
         point_list = []
@@ -186,7 +202,7 @@ class TestPathFromPoints(unittest.TestCase):
         orientation = self._path.poses[2].pose.orientation
         yaw = yaw_from_orientation(orientation)
 
-        self.assertAlmostEquals(math.fabs(yaw), 180, 7, "Going down")
+        self.assertAlmostEquals(np.linalg.norm(yaw), 180, 7, "Going down")
 
         orientation = self._path.poses[3].pose.orientation
         yaw = yaw_from_orientation(orientation)
@@ -213,6 +229,40 @@ class TestPathFromPoints(unittest.TestCase):
 
         self.assertAlmostEquals(yaw, 135, 7, "Going down left")
 
+    def it_interpolates_points(self):
+        rospy.logerr("Starting interpolation test")
+        self.set_interpolate(True)
+        self.clear_path()
+
+        point_stamped = create_point_stamped(0.0, 0)
+        self._point_publisher.publish(point_stamped)
+
+        point_stamped = create_point_stamped(1.0, 0.0)
+        self._point_publisher.publish(point_stamped)
+
+        point_stamped = create_point_stamped(1.0, 1.0)
+        rospy.logerr("last point sent")
+        self._point_publisher.publish(point_stamped)
+
+        this_path_received = False
+        while not rospy.is_shutdown():
+            if self._path_received and len(self._path.poses) > 2 * 10 - 1:
+                this_path_received = True
+                break
+
+            if rospy.get_time() - self._starttime > self._test_duration:
+                break
+
+        # rospy.logerr("num poses %d", len(self._path.poses))
+        self.assertTrue(this_path_received, "No path received")
+
+        for pose_stamped in self._path.poses:
+            if(np.linalg.norm(pose_stamped.pose.position.x - 1.0) < 0.1):
+                message = "y at x=1.0 is: " + str(pose_stamped.pose.position.y)
+                close_enough = np.linalg.norm(pose_stamped.pose.position.y - 0.0) < 0.1
+                self.assertTrue(close_enough, message)
+                break
+
 
 def yaw_from_orientation(orientation):
     quaternion = (
@@ -221,7 +271,7 @@ def yaw_from_orientation(orientation):
         orientation.z,
         orientation.w)
     euler = euler_from_quaternion(quaternion)
-    return euler[2] * 180 / math.pi
+    return euler[2] * 180 / np.pi
 
 
 def create_point_stamped(x=0, y=0, z=0, frame_id="map"):

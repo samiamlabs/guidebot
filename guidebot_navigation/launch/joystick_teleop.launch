@@ -1,0 +1,4 @@
+<launch>
+  <node name="joy_node" pkg="joy" type="joy_node"/>
+  <node name="joystick_teleop" pkg="guidebot_navigation" type="joystick_teleop"/>
+</launch>

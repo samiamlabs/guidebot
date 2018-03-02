@@ -5,40 +5,17 @@ import rospy
 import tf
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
 
-from geometry_msgs.msg import PoseArray, PointStamped, PoseStamped, Quaternion
+from geometry_msgs.msg import Pose, PoseArray, PointStamped, PoseStamped, Quaternion
 from nav_msgs.msg import Path
 
 from std_srvs.srv import *
 
-import math
+import numpy as np
+from scipy.interpolate import splprep, splev
 
 
 def orientation_from_yaw(yaw):
     return Quaternion(*quaternion_from_euler(0, 0, yaw))
-
-
-def get_angle_to_next_point(x, y, x_last, y_last):
-    x_delta = x - x_last
-    y_delta = -(y - y_last)
-
-    theta_radians = math.atan2(x_delta, y_delta)
-
-    if theta_radians >= 0 and theta_radians < math.pi:
-        theta_radians += 3 * math.pi / 2
-    else:
-        theta_radians -= math.pi / 2
-
-    return orientation_from_yaw(theta_radians)
-
-
-def yaw_from_orientation(orientation):
-    quaternion = (
-        orientation.x,
-        orientation.y,
-        orientation.z,
-        orientation.w)
-    euler = euler_from_quaternion(quaternion)
-    return euler[2] * 180 / math.pi
 
 
 class PathFromPoints():
@@ -48,7 +25,8 @@ class PathFromPoints():
         self.clear()
 
         rospy.Subscriber('/clicked_point', PointStamped, self.clicked_point_cb)
-        rospy.Subscriber('/move_base_simple/goal', PoseStamped, self.move_base_goal_cb)
+        rospy.Subscriber('/move_base_simple/goal',
+                         PoseStamped, self.move_base_goal_cb)
 
         self._path_publisher = rospy.Publisher(
             'linefollow_path', Path, queue_size=10)
@@ -59,10 +37,17 @@ class PathFromPoints():
         clearService = rospy.Service(
             'clear_linefollow_path', Empty, self.handle_clear)
 
-        rospy.Subscriber('/move_base/GlobalPlanner/plan', Path, self.global_plan_cb)
+        setInterpolationService = rospy.Service(
+            'set_interpolate', SetBool, self.handle_set_interpolate)
+
+        rospy.Subscriber('/move_base/GlobalPlanner/plan',
+                         Path, self.global_plan_cb)
 
         self.global_pose_array_publisher = rospy.Publisher(
             '/global_plan_array', PoseArray, queue_size=10)
+
+        self._interpolate = True
+        self._interpolate_quadratic = False
 
         rospy.spin()
 
@@ -71,58 +56,143 @@ class PathFromPoints():
         pose_array.header.frame_id = 'map'
         for pose_stamped in msg.poses:
             pose_array.poses.append(pose_stamped.pose)
-
         self.global_pose_array_publisher.publish(pose_array)
 
-
-
     def clear(self):
-        self._path = Path()
-        self._path.header.frame_id = 'map'
+        rospy.loginfo('Clearing linefollow path')
 
-        self._pose_array = PoseArray()
-        self._pose_array.header.frame_id = 'map'
-
+        self._points = None
+        self._angles = None
 
     def handle_clear(self, req):
-        rospy.loginfo('Clearing linefollow path')
         self.clear()
 
         return EmptyResponse()
 
+    def handle_set_interpolate(self, req):
+        rospy.loginfo('Setting interpolation')
+        self._interpolate = req.data
+
+        return SetBoolResponse()
+
     def move_base_goal_cb(self, msg):
         rospy.loginfo("Move base goal received, clearing path")
         self.clear()
+        # self._path_publisher.publish(Path())
+
+    def add_point(self, x, y):
+        if self._points is None:
+            self._points = np.array([[x, y]])
+        else:
+            self._points = np.concatenate(
+                (self._points, [[x, y]]))
+
+        # Calclate pose orientation
+        delta_points = np.diff(self._points, axis=0)
+        if delta_points.shape[0] == 0:
+            delta_points = np.array([[0, 0], [0, 0]])
+        else:
+            delta_points = np.concatenate((delta_points, [delta_points[-1]]))
+
+        self._angles = np.arctan2(
+            delta_points[:, 1], delta_points[:, 0])  # * 180 / np.pi
+
+    def publish_path(self):
+
+        path = Path()
+        path.header.frame_id = 'map'
+
+        if self._interpolate:
+            points = self._interpolated_points
+            angles = self._interpolated_angles
+        else:
+            points = self._points
+            angles = self._angles
+
+        for point, angle in zip(points, angles):
+
+            # rospy.logwarn("x: %f, y: %f, angle: %f", point[0], point[1], angle)
+
+            pose_stamped = PoseStamped()
+
+            pose_stamped.header.frame_id = 'map'
+            pose_stamped.pose.position.x = point[0]
+            pose_stamped.pose.position.y = point[1]
+            pose_stamped.pose.orientation = orientation_from_yaw(angle)
+
+            path.poses.append(pose_stamped)
+
+        # rospy.logwarn("Publishing path")
+        self._path_publisher.publish(path)
+
+    def publish_pose_array(self):
+        pose_array = PoseArray()
+        pose_array.header.frame_id = 'map'
+
+        if self._interpolate:
+            points = self._interpolated_points
+            angles = self._interpolated_angles
+        else:
+            points = self._points
+            angles = self._angles
+
+        for point, angle in zip(points, angles):
+
+            pose = Pose()
+
+            pose.position.x = point[0]
+            pose.position.y = point[1]
+            pose.orientation = orientation_from_yaw(angle)
+
+            pose_array.poses.append(pose)
+
+        self._pose_array_publisher.publish(pose_array)
 
     def clicked_point_cb(self, msg):
-        rospy.loginfo('Adding point x: %f, y: %f', msg.point.x, msg.point.y)
+        self.add_point(msg.point.x, msg.point.y)
         rospy.sleep(0)
 
-        if len(self._path.poses) == 0:
-            orientation = orientation_from_yaw(0)
+        if self._interpolate:
+            self.interpolate_points()
+
+        self.publish_path()
+        self.publish_pose_array()
+
+    def interpolate_points(self):
+
+        if self._points.shape[0] == 1:
+            self._interpolated_points = self._points
+            self._interpolated_angles = self._angles
+            return
+        elif self._points.shape[0] < 4 or not self._interpolate_quadratic:
+            tck, u = splprep(self._points.T, k=1, u=None, s=0.0)
         else:
-            x = msg.point.x
-            y = msg.point.y
-            x_last = self._path.poses[-1].pose.position.x
-            y_last = self._path.poses[-1].pose.position.y
+            tck, u = splprep(self._points.T, u=None, s=0.0)
 
-            orientation = get_angle_to_next_point(x, y, x_last, y_last)
-            self._path.poses[-1].pose.orientation = orientation
-            self._pose_array.poses[-1].orientation = orientation
+        distance = 0
+        for point, next_point in zip(self._points, self._points[1:]):
+            distance += np.linalg.norm(point - next_point)
 
-        pose_stamped = PoseStamped()
-        pose_stamped.header.frame_id = 'map'
-        pose_stamped.pose.position = msg.point
-        pose_stamped.pose.orientation = orientation
+        resolution = 0.1
+        number_of_points = distance/resolution
 
-        self._path.poses.append(pose_stamped)
-        self._path_publisher.publish(self._path)
+        u_new = np.linspace(u.min(), u.max(), int(number_of_points))
+        x_new, y_new = splev(u_new, tck, der=0)
 
-        self._pose_array.poses.append(pose_stamped.pose)
-        self._pose_array_publisher.publish(self._pose_array)
+        self._interpolated_points = np.zeros((x_new.shape[0], 2))
+        self._interpolated_points[:, 0] = x_new
+        self._interpolated_points[:, 1] = y_new
 
-        # for index, pose in enumerate(self._path.poses):
-        #     rospy.loginfo("index: %d yaw: %f", index, yaw_from_orientation(pose.pose.orientation))
+        # Calclate pose orientation
+        delta_points = np.diff(self._interpolated_points, axis=0)
+        if delta_points.shape[0] == 0:
+            delta_points = np.array([[0, 0], [0, 0]])
+        else:
+            delta_points = np.concatenate((delta_points, [delta_points[-1]]))
+
+        self._interpolated_angles = np.arctan2(
+            delta_points[:, 1], delta_points[:, 0])
+
 
 
 if __name__ == '__main__':
