@@ -16,8 +16,8 @@
 
   <depend>rostest</depend>
   <depend>rosunit</depend>
-  <depend>diagnostics_common_diagnostics</depend>
-  <depend>diagnostics_updater</depend>
+  <depend>diagnostic_common_diagnostics</depend>
+  <depend>diagnostic_updater</depend>
 
   <depend>gazebo_ros</depend>
   <depend>gazebo_plugins</depend>

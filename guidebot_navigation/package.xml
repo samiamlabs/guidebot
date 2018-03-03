@@ -31,6 +31,7 @@
   <depend>python-scipy</depend>
 
   <depend>global_planner</depend>
+  <depend>joy</depend>
 
   <export>
     <nav_core plugin="${prefix}/linefollow_plugin.xml" />
